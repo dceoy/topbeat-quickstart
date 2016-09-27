@@ -85,12 +85,18 @@ case "${OSTYPE}" in
     abort 'unsupported os type'
     ;;
 esac
+
+DASHBOARDS_DIR="beats-dashboards-${TOPBEAT_VERSION}"
+[[ ! -d "${DASHBOARDS_DIR}" ]] \
+  && curl -LO "http://download.elastic.co/beats/dashboards/${DASHBOARDS_DIR}.zip" \
+  && unzip "${DASHBOARDS_DIR}.zip"
 echo
 
 echo '[ Load the index template ]'
 curl -XPUT "http://${ELASTICSEARCH_HOST}/_template/topbeat" -d@${TOPBEAT_DIR}/topbeat.template.json
+cd ${DASHBOARDS_DIR} && ./load.sh -url "http://${ELASTICSEARCH_HOST}" && cd -
 echo && echo
 
 echo '[ Start Topbeat ]'
 echo '# Run this command:'
-echo "# cd ${TOPBEAT_DIR} && sudo ./topbeat -e -c topbeat.yml -d 'publish'"
+echo "# sudo ${TOPBEAT_DIR}/topbeat -e -c ${TOPBEAT_DIR}/topbeat.yml -d 'publish'"
