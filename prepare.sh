@@ -34,7 +34,7 @@ function print_usage {
     /^#/!q
     s/^#$/# /
     s/^# //p
-  ' "${SCRIPT_NAME}"
+  ' ${SCRIPT_NAME}
 }
 
 function abort {
