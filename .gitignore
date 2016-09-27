@@ -1,4 +1,3 @@
-*.tar.gz
-*.tgz
-topbeat-*
-beats-dashboards-*
+download/*
+topbeat
+topbeat.yml
