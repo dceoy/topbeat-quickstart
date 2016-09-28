@@ -75,14 +75,14 @@ cd "${DOWNLOAD_DIR}"
 case "${OSTYPE}" in
   linux* )
     TOPBEAT_DIR="topbeat-${TOPBEAT_VERSION}-x86_64"
-    [[ -d "${TOPBEAT_DIR}" ]] \
-      || curl -LO "https://download.elastic.co/beats/topbeat/topbeat-${TOPBEAT_VERSION}-x86_64.tar.gz" \
+    [[ ! -d "${TOPBEAT_DIR}" ]] \
+      && curl -LO "https://download.elastic.co/beats/topbeat/topbeat-${TOPBEAT_VERSION}-x86_64.tar.gz" \
       && tar xzvf "${TOPBEAT_DIR}.tar.gz"
     ;;
   darwin* )
     TOPBEAT_DIR="topbeat-${TOPBEAT_VERSION}-darwin"
-    [[ -d "${TOPBEAT_DIR}" ]] \
-      || curl -LO "https://download.elastic.co/beats/topbeat/topbeat-${TOPBEAT_VERSION}-darwin.tgz" \
+    [[ ! -d "${TOPBEAT_DIR}" ]] \
+      && curl -LO "https://download.elastic.co/beats/topbeat/topbeat-${TOPBEAT_VERSION}-darwin.tgz" \
       && tar xzvf "${TOPBEAT_DIR}.tgz"
     ;;
   * )
@@ -91,8 +91,8 @@ case "${OSTYPE}" in
 esac
 
 DASHBOARDS_DIR="beats-dashboards-${TOPBEAT_VERSION}"
-[[ -d "${DASHBOARDS_DIR}" ]] \
-  || curl -LO "https://download.elastic.co/beats/dashboards/${DASHBOARDS_DIR}.zip" \
+[[ ! -d "${DASHBOARDS_DIR}" ]] \
+  && curl -LO "https://download.elastic.co/beats/dashboards/${DASHBOARDS_DIR}.zip" \
   && unzip "${DASHBOARDS_DIR}.zip"
 echo
 
@@ -105,11 +105,11 @@ cd "${DASHBOARDS_DIR}"
 ./load.sh -url "http://${ELASTICSEARCH_HOST}"
 cd ../..
 
-[[ -f 'topbeat.yml' ]] \
-  || sed -e "s/\\[\"localhost:9200\"\\]/\\[\"${ELASTICSEARCH_HOST}\"\\]/" \
+[[ ! -f 'topbeat.yml' ]] \
+  && sed -e "s/\\[\"localhost:9200\"\\]/\\[\"${ELASTICSEARCH_HOST}\"\\]/" \
        "${DOWNLOAD_DIR}/${TOPBEAT_DIR}/topbeat.yml" > topbeat.yml
-[[ -f 'topbeat' ]] \
-  || ln -s "${DOWNLOAD_DIR}/${TOPBEAT_DIR}/topbeat" .
+[[ ! -f 'topbeat' ]] \
+  && ln -s "${DOWNLOAD_DIR}/${TOPBEAT_DIR}/topbeat" .
 
 echo && echo
 echo '[ Start Topbeat ]'
