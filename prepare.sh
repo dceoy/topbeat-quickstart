@@ -53,13 +53,11 @@ while [[ -n "${1}" ]]; do
       exit 0
       ;;
     '-e' | '--elasticsearch' )
-      flag="${1}"
-      shift 1
-      if [[ "${1}" =~ ^[^\-] ]]; then
-        ELASTICSEARCH_HOST="${1}"
-        shift 1
+      if [[ "${2}" =~ ^[^\-] ]]; then
+        ELASTICSEARCH_HOST="${2}"
+        shift 2
       else
-        abort "flag needs an argument: ${flag}"
+        abort "flag needs an argument: ${1}"
       fi
       ;;
     * )
