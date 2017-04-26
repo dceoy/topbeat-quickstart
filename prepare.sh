@@ -74,13 +74,13 @@ case "${OSTYPE}" in
   linux* )
     TOPBEAT_DIR="topbeat-${TOPBEAT_VERSION}-x86_64"
     [[ ! -d "${TOPBEAT_DIR}" ]] \
-      && curl -LO "https://download.elastic.co/beats/topbeat/topbeat-${TOPBEAT_VERSION}-x86_64.tar.gz" \
+      && curl -SLO "https://download.elastic.co/beats/topbeat/topbeat-${TOPBEAT_VERSION}-x86_64.tar.gz" \
       && tar xzvf "${TOPBEAT_DIR}.tar.gz"
     ;;
   darwin* )
     TOPBEAT_DIR="topbeat-${TOPBEAT_VERSION}-darwin"
     [[ ! -d "${TOPBEAT_DIR}" ]] \
-      && curl -LO "https://download.elastic.co/beats/topbeat/topbeat-${TOPBEAT_VERSION}-darwin.tgz" \
+      && curl -SLO "https://download.elastic.co/beats/topbeat/topbeat-${TOPBEAT_VERSION}-darwin.tgz" \
       && tar xzvf "${TOPBEAT_DIR}.tgz"
     ;;
   * )
@@ -90,13 +90,13 @@ esac
 
 DASHBOARDS_DIR="beats-dashboards-${TOPBEAT_VERSION}"
 [[ ! -d "${DASHBOARDS_DIR}" ]] \
-  && curl -LO "https://download.elastic.co/beats/dashboards/${DASHBOARDS_DIR}.zip" \
+  && curl -SLO "https://download.elastic.co/beats/dashboards/${DASHBOARDS_DIR}.zip" \
   && unzip "${DASHBOARDS_DIR}.zip"
 echo
 
 echo '[ Prepare Topbeat ]'
 cd "${TOPBEAT_DIR}"
-curl -XPUT "http://${ELASTICSEARCH_HOST}/_template/topbeat" -d@topbeat.template.json
+curl -S -XPUT "http://${ELASTICSEARCH_HOST}/_template/topbeat" -d@topbeat.template.json
 cd ..
 
 cd "${DASHBOARDS_DIR}"
