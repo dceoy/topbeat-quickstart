@@ -2,14 +2,16 @@ version: '3'
 
 services:
   elasticsearch:
-    image: elasticsearch
     container_name: elasticsearch
+    image: elasticsearch
+    restart: always
     ports:
       - "9200:9200"
 
   kibana:
-    image: kibana
     container_name: kibana
+    image: kibana
+    restart: always
     depends_on:
       - elasticsearch
     ports:
