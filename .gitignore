@@ -1,3 +1,4 @@
 download/*
 topbeat
 topbeat.yml
+!download/topbeat_url_list.txt
