@@ -100,7 +100,7 @@ curl -S -XPUT "http://${ELASTICSEARCH_HOST}/_template/topbeat" -d@topbeat.templa
 cd ..
 
 cd "${DASHBOARDS_DIR}"
-./load.sh -url "http://${ELASTICSEARCH_HOST}"
+./load.sh -url "http://${ELASTICSEARCH_HOST}" -index topbeat
 cd ../..
 
 [[ ! -f 'topbeat.yml' ]] \
